@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Пользователи</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ФИО</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody id="users-table-body">
+        <tr><td colspan="3">Загрузка...</td></tr>
+    </tbody>
+</table>
+
+<script>
+    fetch('/api/users/')
+        .then(res => res.json())
+        .then(users => {
+            const tbody = document.getElementById('users-table-body');
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2">Нет пользователей</td></tr>';
+                return;
+            }
+            tbody.innerHTML = users.map(u => `
+                <tr onclick="showUserModal(${u.id})" style="cursor: pointer;">
+                    <td>${u.full_name}</td>
+                    <td>${u.email}</td>
+                </tr>
+            `).join('');
+        });
+</script>
+{% endblock %}

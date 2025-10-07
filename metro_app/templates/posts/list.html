@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Посты</h2>
+<div id="posts-container">
+    <!-- Загрузится через JS -->
+    <p>Загрузка...</p>
+</div>
+
+<script>
+    fetch('/api/posts/')
+        .then(res => res.json())
+        .then(posts => {
+            const container = document.getElementById('posts-container');
+            if (posts.length === 0) {
+                container.innerHTML = '<p>Нет постов.</p>';
+                return;
+            }
+            container.innerHTML = posts.map(p => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Информация:${p.title}</h5>
+                        <p class="card-text">${p.content}</p>
+                    </div>
+                </div>
+            `).join('');
+        });
+</script>
+{% endblock %}
