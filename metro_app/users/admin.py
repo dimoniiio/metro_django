@@ -3,6 +3,8 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
+    """Админка для пользователя."""
+
     list_display = ('full_name', 'email', 'address', 'photo')
     search_fields = ('full_name', 'email')
     list_filter = ('full_name',)
